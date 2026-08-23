@@ -234,6 +234,13 @@ Verified on macOS against jvm, `iosSimulatorArm64`, `macosArm64`, an
 `androidJvm` host-test task and an instrumented run on an emulator. JS and wasm are not supported. Windows is
 untested.
 
+## AI assistance
+
+Parts of this code base were written with AI tools and reviewed by me. Every
+operator has a test that runs the actual mutant, and CI checks the example
+projects against their expected results, so bugs have to get past the tests,
+not just past me. If one does, please open an issue.
+
 ## License
 
 [Apache License 2.0](LICENSE)
