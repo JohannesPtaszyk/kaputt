@@ -369,13 +369,15 @@ abstract class MutationTestTask : DefaultTask() {
                     null
                 }
 
-                outcome.timedOut || outcome.exitCode != 0 -> throw GradleException(
-                    "Mutation testing aborted: the baseline run for target '${run.name}' of " +
-                        "$moduleName did not pass (exit code ${outcome.exitCode}, timed out: " +
-                        "${outcome.timedOut}). See ${logsDir.resolve("baseline-${run.name}.log")}",
-                )
+                outcome.timedOut || outcome.exitCode != 0 -> {
+                    throw GradleException(
+                        "Mutation testing aborted: the baseline run for target '${run.name}' of " +
+                            "$moduleName did not pass (exit code ${outcome.exitCode}, timed out: " +
+                            "${outcome.timedOut}). See ${logsDir.resolve("baseline-${run.name}.log")}",
+                    )
+                }
 
-                else ->
+                else -> {
                     run.also {
                         it.readCoverage(logsDir)
                         it.baselineMs = outcome.durationMs
@@ -384,6 +386,7 @@ abstract class MutationTestTask : DefaultTask() {
                             factor = timeoutFactor.get(),
                         )
                     }
+                }
             }
         }
     }
@@ -441,10 +444,14 @@ abstract class MutationTestTask : DefaultTask() {
         // cpu, so oversubscribing the cores pays.
         val workers =
             when {
-                runs.any { it.kind == TargetRun.TargetKind.ANDROID_DEVICE } -> 1
-                else ->
+                runs.any { it.kind == TargetRun.TargetKind.ANDROID_DEVICE } -> {
+                    1
+                }
+
+                else -> {
                     parallelism.orNull
                         ?: (Runtime.getRuntime().availableProcessors() * 3 / 2).coerceAtLeast(1)
+                }
             }
         val pool = Executors.newFixedThreadPool(workers)
         try {
@@ -787,7 +794,7 @@ abstract class MutationTestTask : DefaultTask() {
             batchFile: File? = null,
         ): List<String> =
             when (kind) {
-                TargetRun.TargetKind.JVM ->
+                TargetRun.TargetKind.JVM -> {
                     JvmTestCommand.command(
                         javaExecutable =
                             checkNotNull(javaLauncher) {
@@ -800,20 +807,23 @@ abstract class MutationTestTask : DefaultTask() {
                         batchFile = batchFile,
                         errorFileDir = crashDir,
                     )
+                }
 
-                TargetRun.TargetKind.ANDROID_DEVICE ->
+                TargetRun.TargetKind.ANDROID_DEVICE -> {
                     AndroidInstrumentation.command(
                         adb = checkNotNull(adbPath) { "No adb configured for target '$name'" },
                         deviceSerial = deviceSerial,
                         target = checkNotNull(instrumentationTarget),
                         mutationId = mutationId,
                     )
+                }
 
-                else ->
+                else -> {
                     NativeTestCommand.command(
                         binary = checkNotNull(binary) { "No test binary for target '$name'" },
                         simulatorDevice = simulatorDevice,
                     )
+                }
             }
 
         /** Ends a runaway mutant from inside the loop it broke. */
@@ -826,15 +836,20 @@ abstract class MutationTestTask : DefaultTask() {
 
         fun environment(mutationId: String?): Map<String, String> =
             when (kind) {
-                TargetRun.TargetKind.JVM -> testEnvironment + deadlineEnvironment()
+                TargetRun.TargetKind.JVM -> {
+                    testEnvironment + deadlineEnvironment()
+                }
 
-                TargetRun.TargetKind.ANDROID_DEVICE -> emptyMap()
+                TargetRun.TargetKind.ANDROID_DEVICE -> {
+                    emptyMap()
+                }
 
-                else ->
+                else -> {
                     NativeTestCommand.environment(
                         mutationId = mutationId,
                         simulator = kind == TargetRun.TargetKind.NATIVE_SIMULATOR,
                     ) + deadlineEnvironment()
+                }
             }
     }
 

@@ -293,10 +293,14 @@ class MutationGradlePlugin : KotlinCompilerPluginSupportPlugin {
             }
         return candidates.filter { kotlinTarget ->
             when {
-                kotlinTarget.platformType == KotlinPlatformType.jvm -> true
+                kotlinTarget.platformType == KotlinPlatformType.jvm -> {
+                    true
+                }
 
                 kotlinTarget is KotlinNativeTarget &&
-                    HostManager().isEnabled(kotlinTarget.konanTarget) -> true
+                    HostManager().isEnabled(kotlinTarget.konanTarget) -> {
+                    true
+                }
 
                 else -> {
                     project.logger.warn(
@@ -315,12 +319,17 @@ class MutationGradlePlugin : KotlinCompilerPluginSupportPlugin {
         kotlinTarget: KotlinTarget,
     ): TargetRun =
         when {
-            kotlinTarget.platformType == KotlinPlatformType.jvm ->
+            kotlinTarget.platformType == KotlinPlatformType.jvm -> {
                 jvmTargetRun(project, kotlinTarget.mutationDirName(), "${kotlinTarget.name}Test")
+            }
 
-            kotlinTarget is KotlinNativeTarget -> nativeTargetRun(project, task, kotlinTarget)
+            kotlinTarget is KotlinNativeTarget -> {
+                nativeTargetRun(project, task, kotlinTarget)
+            }
 
-            else -> error("Unsupported mutation target '${kotlinTarget.name}'")
+            else -> {
+                error("Unsupported mutation target '${kotlinTarget.name}'")
+            }
         }
 
     /**
@@ -433,9 +442,13 @@ class MutationGradlePlugin : KotlinCompilerPluginSupportPlugin {
         while (index < args.size) {
             val arg = args[index]
             when {
-                arg == "-cp" || arg == "-classpath" -> index += 2
+                arg == "-cp" || arg == "-classpath" -> {
+                    index += 2
+                }
 
-                arg.isCoverageAgent() -> index++
+                arg.isCoverageAgent() -> {
+                    index++
+                }
 
                 else -> {
                     filtered += arg

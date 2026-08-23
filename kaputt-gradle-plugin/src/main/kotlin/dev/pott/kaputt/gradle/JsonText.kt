@@ -11,22 +11,33 @@ internal object JsonText {
             append('"')
             value.forEach { char ->
                 when (char) {
-                    '"' -> append("\\\"")
+                    '"' -> {
+                        append("\\\"")
+                    }
 
-                    '\\' -> append("\\\\")
+                    '\\' -> {
+                        append("\\\\")
+                    }
 
-                    '\n' -> append("\\n")
+                    '\n' -> {
+                        append("\\n")
+                    }
 
-                    '\r' -> append("\\r")
+                    '\r' -> {
+                        append("\\r")
+                    }
 
-                    '\t' -> append("\\t")
+                    '\t' -> {
+                        append("\\t")
+                    }
 
-                    else ->
+                    else -> {
                         if (char.code < 0x20) {
                             append("\\u%04x".format(char.code))
                         } else {
                             append(char)
                         }
+                    }
                 }
             }
             append('"')

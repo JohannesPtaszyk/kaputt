@@ -19,23 +19,34 @@ object MutationScore {
         timedOut: Boolean,
     ): MutantStatus =
         when {
-            timedOut -> MutantStatus.TIMED_OUT
+            timedOut -> {
+                MutantStatus.TIMED_OUT
+            }
 
-            exitCode == 0 -> MutantStatus.SURVIVED
+            exitCode == 0 -> {
+                MutantStatus.SURVIVED
+            }
 
-            exitCode == null -> MutantStatus.ERROR
+            exitCode == null -> {
+                MutantStatus.ERROR
+            }
 
             kind == TargetRun.TargetKind.ANDROID_DEVICE &&
-                exitCode == AndroidInstrumentation.EXIT_INSTRUMENTATION_ERROR ->
+                exitCode == AndroidInstrumentation.EXIT_INSTRUMENTATION_ERROR -> {
                 MutantStatus.ERROR
+            }
 
             kind == TargetRun.TargetKind.JVM &&
                 (
                     exitCode == MutationTestRunner.EXIT_INTERNAL_ERROR ||
                         exitCode == MutationTestRunner.EXIT_NO_TESTS
-                ) -> MutantStatus.ERROR
+                ) -> {
+                MutantStatus.ERROR
+            }
 
-            else -> MutantStatus.KILLED
+            else -> {
+                MutantStatus.KILLED
+            }
         }
 
     /**
