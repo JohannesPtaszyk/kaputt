@@ -18,6 +18,16 @@
         "minor"
       ],
       "enabled": false
+    },
+    {
+      "description": "The launcher is compileOnly against the platform 1.x line so the driver stays bytecode-compatible with JUnit 5 consumers; their runtime provides the launcher.",
+      "matchPackageNames": [
+        "org.junit.platform:junit-platform-launcher"
+      ],
+      "matchUpdateTypes": [
+        "major"
+      ],
+      "enabled": false
     }
   ],
   "semanticCommitType": "chore",
