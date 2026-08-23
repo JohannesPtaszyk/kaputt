@@ -1,5 +1,5 @@
 plugins {
-    id("com.diffplug.spotless") version "8.1.0" apply false
+    id("com.diffplug.spotless") version "8.10.0" apply false
 }
 
 import org.gradle.api.publish.PublishingExtension
