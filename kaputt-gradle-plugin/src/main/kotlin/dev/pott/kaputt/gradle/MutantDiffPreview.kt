@@ -47,21 +47,29 @@ object MutantDiffPreview {
                 if (from in span) span.replaceFirst(from, to) else null
             }
 
-            point.description == "removed '!'" ->
+            point.description == "removed '!'" -> {
                 if (span.startsWith("!")) {
                     span.removePrefix("!")
                 } else {
                     span.removeSuffix(".not()").takeIf { it != span }
                 }
+            }
 
-            point.description.startsWith("removed call to") -> ""
+            point.description.startsWith("removed call to") -> {
+                ""
+            }
 
-            NEGATED_PATTERN.matches(point.description) -> "!($span)"
+            NEGATED_PATTERN.matches(point.description) -> {
+                "!($span)"
+            }
 
-            point.description.startsWith(RETURN_PREFIX) ->
+            point.description.startsWith(RETURN_PREFIX) -> {
                 point.description.removePrefix(RETURN_PREFIX)
+            }
 
-            else -> null
+            else -> {
+                null
+            }
         }
     }
 

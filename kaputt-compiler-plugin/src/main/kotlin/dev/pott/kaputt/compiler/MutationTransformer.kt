@@ -235,25 +235,37 @@ class MutationTransformer(
     private fun planNumberLiterals(expression: IrConst): List<MutantPlan> {
         val neighbors: List<Any> =
             when (expression.kind) {
-                IrConstKind.Int -> (expression.value as Int).let { listOf(it + 1, it - 1) }
+                IrConstKind.Int -> {
+                    (expression.value as Int).let { listOf(it + 1, it - 1) }
+                }
 
-                IrConstKind.Long -> (expression.value as Long).let { listOf(it + 1, it - 1) }
+                IrConstKind.Long -> {
+                    (expression.value as Long).let { listOf(it + 1, it - 1) }
+                }
 
-                IrConstKind.Short ->
+                IrConstKind.Short -> {
                     (expression.value as Short).let {
                         listOf((it + 1).toShort(), (it - 1).toShort())
                     }
+                }
 
-                IrConstKind.Byte ->
+                IrConstKind.Byte -> {
                     (expression.value as Byte).let {
                         listOf((it + 1).toByte(), (it - 1).toByte())
                     }
+                }
 
-                IrConstKind.Float -> (expression.value as Float).let { listOf(it + 1f, it - 1f) }
+                IrConstKind.Float -> {
+                    (expression.value as Float).let { listOf(it + 1f, it - 1f) }
+                }
 
-                IrConstKind.Double -> (expression.value as Double).let { listOf(it + 1.0, it - 1.0) }
+                IrConstKind.Double -> {
+                    (expression.value as Double).let { listOf(it + 1.0, it - 1.0) }
+                }
 
-                else -> return emptyList()
+                else -> {
+                    return emptyList()
+                }
             }
         return neighbors.mapNotNull { mutated ->
             plan(
@@ -334,18 +346,25 @@ class MutationTransformer(
                 }
             }
 
-            irBuiltIns.listClass ->
+            irBuiltIns.listClass -> {
                 emptyCollectionPlan(
                     value,
                     symbols.emptyListSymbol,
                     "emptyList()",
                 )
+            }
 
-            irBuiltIns.setClass -> emptyCollectionPlan(value, symbols.emptySetSymbol, "emptySet()")
+            irBuiltIns.setClass -> {
+                emptyCollectionPlan(value, symbols.emptySetSymbol, "emptySet()")
+            }
 
-            irBuiltIns.mapClass -> emptyCollectionPlan(value, symbols.emptyMapSymbol, "emptyMap()")
+            irBuiltIns.mapClass -> {
+                emptyCollectionPlan(value, symbols.emptyMapSymbol, "emptyMap()")
+            }
 
-            else -> null
+            else -> {
+                null
+            }
         }
 
     private fun emptyCollectionPlan(
@@ -594,7 +613,9 @@ class MutationTransformer(
                     until to "replaced '..' with 'until'"
                 }
 
-                else -> return null
+                else -> {
+                    return null
+                }
             }
         val copy = call.deepCopyWithSymbols(copyParent)
         return plan(MutationOperator.RANGE_BOUNDARY, description, call) { builder ->
