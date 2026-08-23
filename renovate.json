@@ -1,0 +1,13 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended"],
+  "schedule": ["before 6am on monday"],
+  "packageRules": [
+    {
+      "description": "The compiler plugin tracks one Kotlin minor line; bumping it is a deliberate release, not routine maintenance.",
+      "matchPackageNames": ["/org.jetbrains.kotlin.*/"],
+      "matchUpdateTypes": ["major", "minor"],
+      "enabled": false
+    }
+  ]
+}
