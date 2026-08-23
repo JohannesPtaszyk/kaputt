@@ -16,7 +16,7 @@ jobs:
         with:
           distribution: temurin
           java-version: 21
-      - uses: gradle/actions/setup-gradle@v4
+      - uses: gradle/actions/setup-gradle@v6
       # build runs ExampleProjectTest, which drives every example end to end:
       # target selection, forks and the reports. The runner image carries an
       # Android SDK, so the Android examples run here too.
@@ -36,7 +36,7 @@ jobs:
         with:
           distribution: temurin
           java-version: 21
-      - uses: gradle/actions/setup-gradle@v4
+      - uses: gradle/actions/setup-gradle@v6
       # The same examples, but the multiplatform one measures macosArm64 here.
       - name: Build and test (jvm + apple targets)
         run: ./gradlew build :kaputt-runtime:macosArm64Test :kaputt-runtime:compileKotlinIosSimulatorArm64
