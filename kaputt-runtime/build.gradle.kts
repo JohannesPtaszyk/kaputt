@@ -33,7 +33,7 @@ kotlin {
             // the runner only needs the annotation/launcher types at compile
             // time; at runtime they come from the module under test.
             compileOnly("junit:junit:4.13.2")
-            compileOnly("org.junit.platform:junit-platform-launcher:1.13.0")
+            compileOnly("org.junit.platform:junit-platform-launcher:1.14.4")
         }
         jvmTest.dependencies {
             implementation("junit:junit:4.13.2")
