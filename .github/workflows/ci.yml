@@ -1,0 +1,47 @@
+# CI for the standalone repository. While this project is vendored inside a
+# host repo, GitHub ignores this file (only the root .github/ is read).
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+      - uses: gradle/actions/setup-gradle@v4
+      # build runs ExampleProjectTest, which drives every example end to end:
+      # target selection, forks and the reports. The runner image carries an
+      # Android SDK, so the Android examples run here too.
+      - name: Build and test (jvm + linuxX64 + examples)
+        run: ./gradlew spotlessCheck build :kaputt-runtime:linuxX64Test
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: linux-test-reports
+          path: '**/build/reports/tests/**'
+
+  macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+      - uses: gradle/actions/setup-gradle@v4
+      # The same examples, but the multiplatform one measures macosArm64 here.
+      - name: Build and test (jvm + apple targets)
+        run: ./gradlew build :kaputt-runtime:macosArm64Test :kaputt-runtime:compileKotlinIosSimulatorArm64
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: macos-test-reports
+          path: '**/build/reports/tests/**'
