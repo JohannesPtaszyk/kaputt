@@ -22,7 +22,7 @@ jobs:
       # Android SDK, so the Android examples run here too.
       - name: Build and test (jvm + linuxX64 + examples)
         run: ./gradlew spotlessCheck build :kaputt-runtime:linuxX64Test
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: failure()
         with:
           name: linux-test-reports
@@ -40,7 +40,7 @@ jobs:
       # The same examples, but the multiplatform one measures macosArm64 here.
       - name: Build and test (jvm + apple targets)
         run: ./gradlew build :kaputt-runtime:macosArm64Test :kaputt-runtime:compileKotlinIosSimulatorArm64
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: failure()
         with:
           name: macos-test-reports
