@@ -16,13 +16,13 @@ jobs:
         with:
           distribution: temurin
           java-version: 21
-      - uses: gradle/actions/setup-gradle@v4
+      - uses: gradle/actions/setup-gradle@v6
       # build runs ExampleProjectTest, which drives every example end to end:
       # target selection, forks and the reports. The runner image carries an
       # Android SDK, so the Android examples run here too.
       - name: Build and test (jvm + linuxX64 + examples)
         run: ./gradlew spotlessCheck build :kaputt-runtime:linuxX64Test
-      - uses: actions/upload-artifact@v7
+      - uses: actions/upload-artifact@v4
         if: failure()
         with:
           name: linux-test-reports
@@ -36,11 +36,11 @@ jobs:
         with:
           distribution: temurin
           java-version: 21
-      - uses: gradle/actions/setup-gradle@v4
+      - uses: gradle/actions/setup-gradle@v6
       # The same examples, but the multiplatform one measures macosArm64 here.
       - name: Build and test (jvm + apple targets)
         run: ./gradlew build :kaputt-runtime:macosArm64Test :kaputt-runtime:compileKotlinIosSimulatorArm64
-      - uses: actions/upload-artifact@v7
+      - uses: actions/upload-artifact@v4
         if: failure()
         with:
           name: macos-test-reports
