@@ -25,6 +25,17 @@ new operator.
 
 `./gradlew spotlessApply` formats everything (ktlint); CI runs `spotlessCheck`.
 
+## Commit messages
+
+Conventional commits: `type(scope)?: summary`, with the types `feat` `fix`
+`docs` `refactor` `perf` `test` `build` `ci` `chore` `revert`. Renovate uses
+`chore(deps)`. CI lints every commit, and the same check runs locally once you
+enable the hook:
+
+```bash
+git config core.hooksPath .githooks
+```
+
 ## Ground rules
 
 - Work test-first. Every operator needs a behavioral test that runs the mutant,
